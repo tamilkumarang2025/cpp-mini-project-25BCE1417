@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mentor Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">M</div>
+      <div class="brand-text">
+        <div class="brand-name">Mentor</div>
+        <div class="brand-sub">Dashboard</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-item active" onclick="switchTab(this,'overview')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Overview
+      </button>
+      <button class="nav-item" onclick="switchTab(this,'add')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Add Student
+      </button>
+      <button class="nav-item" onclick="switchTab(this,'students')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Students
+      </button>
+      <button class="nav-item" onclick="switchTab(this,'reports')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Reports
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sf-row"><span>Students</span><b id="sf-count">0</b></div>
+      <div class="sf-row"><span>Avg Score</span><b id="sf-avg">—</b></div>
+      <div class="sf-row"><span>Pass Rate</span><b id="sf-pass">—</b></div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- OVERVIEW -->
+    <section class="tab active" id="tab-overview">
+      <header class="page-head">
+        <div>
+          <h1>Overview</h1>
+          <p id="hdr-date"></p>
+        </div>
+      </header>
+
+      <div class="kpi-row">
+        <div class="kpi" style="--kpi-c:#6366f1">
+          <div class="kpi-icon" style="background:#6366f115;color:#6366f1">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          </div>
+          <div class="kpi-val" id="kpi-total">0</div>
+          <div class="kpi-label">Total Students</div>
+        </div>
+        <div class="kpi" style="--kpi-c:#0ea5e9">
+          <div class="kpi-icon" style="background:#0ea5e915;color:#0ea5e9">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="kpi-val" id="kpi-avg">—</div>
+          <div class="kpi-label">Class Average</div>
+        </div>
+        <div class="kpi" style="--kpi-c:#10b981">
+          <div class="kpi-icon" style="background:#10b98115;color:#10b981">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+          <div class="kpi-val" id="kpi-top">—</div>
+          <div class="kpi-label">Highest Total</div>
+        </div>
+        <div class="kpi" style="--kpi-c:#f43f5e">
+          <div class="kpi-icon" style="background:#f43f5e15;color:#f43f5e">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="kpi-val" id="kpi-fail">0</div>
+          <div class="kpi-label">Failing</div>
+        </div>
+      </div>
+
+      <div class="ov-row">
+        <div class="card donut-card">
+          <div class="card-head">Grade Breakdown</div>
+          <div class="donut-area">
+            <svg viewBox="0 0 160 160" class="donut-svg" id="donut-svg">
+              <circle class="d-bg" cx="80" cy="80" r="60"/>
+              <circle class="d-seg" id="ds-a"    cx="80" cy="80" r="60" style="stroke:#10b981"/>
+              <circle class="d-seg" id="ds-b"    cx="80" cy="80" r="60" style="stroke:#0ea5e9"/>
+              <circle class="d-seg" id="ds-c"    cx="80" cy="80" r="60" style="stroke:#f59e0b"/>
+              <circle class="d-seg" id="ds-fail" cx="80" cy="80" r="60" style="stroke:#f43f5e"/>
+            </svg>
+            <div class="donut-mid">
+              <span id="d-mid-n">0</span>
+              <small>students</small>
+            </div>
+          </div>
+          <div class="grade-legend">
+            <div class="gl-item"><i style="background:#10b981"></i>A</div>
+            <div class="gl-item"><i style="background:#0ea5e9"></i>B</div>
+            <div class="gl-item"><i style="background:#f59e0b"></i>C</div>
+            <div class="gl-item"><i style="background:#f43f5e"></i>Fail</div>
+          </div>
+        </div>
+
+        <div class="card recent-card">
+          <div class="card-head">Recent Students</div>
+          <div id="recent-list"></div>
+        </div>
+
+        <div class="card grade-bars-card">
+          <div class="card-head">Grade Counts</div>
+          <div id="grade-bars"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADD STUDENT -->
+    <section class="tab" id="tab-add">
+      <header class="page-head">
+        <div><h1>Add Student</h1><p>Fill in details to register a new student</p></div>
+      </header>
+
+      <div class="add-wrap">
+        <div class="card add-card">
+          <div class="field-label-big">Student Info</div>
+          <div class="two-col">
+            <div class="field">
+              <label>Register Number</label>
+              <input id="inp-reg" type="text" placeholder="25BCE0001"/>
+            </div>
+            <div class="field">
+              <label>Full Name</label>
+              <input id="inp-name" type="text" placeholder="Student name"/>
+            </div>
+          </div>
+
+          <div class="field-label-big" style="margin-top:28px">Assessment Marks <span class="hint-tag">0 – 100 each</span></div>
+          <div class="three-col">
+            <div class="mark-block">
+              <div class="mb-label">CAT 1</div>
+              <input class="mb-input" id="inp-cat1" type="number" min="0" max="100" placeholder="0" oninput="livePreview()"/>
+              <div class="mb-bar-bg"><div class="mb-bar" id="bar-cat1"></div></div>
+            </div>
+            <div class="mark-block">
+              <div class="mb-label">CAT 2</div>
+              <input class="mb-input" id="inp-cat2" type="number" min="0" max="100" placeholder="0" oninput="livePreview()"/>
+              <div class="mb-bar-bg"><div class="mb-bar" id="bar-cat2"></div></div>
+            </div>
+            <div class="mark-block">
+              <div class="mb-label">FAT</div>
+              <input class="mb-input" id="inp-fat" type="number" min="0" max="100" placeholder="0" oninput="livePreview()"/>
+              <div class="mb-bar-bg"><div class="mb-bar" id="bar-fat"></div></div>
+            </div>
+          </div>
+
+          <button class="btn-primary" onclick="addStudent()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Student
+          </button>
+        </div>
+
+        <!-- Preview -->
+        <div class="preview-card card" id="preview-panel">
+          <div class="preview-top">
+            <div class="preview-avatar" id="prev-av">?</div>
+            <div class="preview-grade-chip" id="prev-chip">—</div>
+          </div>
+          <div class="preview-name" id="prev-name">—</div>
+          <div class="preview-regno" id="prev-regno">—</div>
+          <div class="preview-sep"></div>
+          <div class="preview-scores">
+            <div class="ps-item"><span class="ps-num" id="ps-c1">—</span><span class="ps-lbl">CAT 1</span></div>
+            <div class="ps-item"><span class="ps-num" id="ps-c2">—</span><span class="ps-lbl">CAT 2</span></div>
+            <div class="ps-item"><span class="ps-num" id="ps-fat">—</span><span class="ps-lbl">FAT</span></div>
+          </div>
+          <div class="preview-sep"></div>
+          <div class="preview-result">
+            <div class="pr-row"><span>Total</span><b id="ps-total">—</b></div>
+            <div class="pr-row"><span>Average</span><b id="ps-avg">—</b></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STUDENTS -->
+    <section class="tab" id="tab-students">
+      <header class="page-head">
+        <div><h1>Students</h1><p id="stud-count-label">All records</p></div>
+        <div class="head-controls">
+          <div class="search-box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="search-inp" type="text" placeholder="Search…" oninput="renderCards()"/>
+          </div>
+          <select id="filter-grade" onchange="renderCards()">
+            <option value="">All</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="Fail">Fail</option>
+          </select>
+        </div>
+      </header>
+
+      <div class="cards-grid" id="cards-grid"></div>
+
+      <div class="update-strip card">
+        <div class="us-title">✏️ Update Marks</div>
+        <div class="us-fields">
+          <input id="upd-reg"  type="text"   placeholder="RegNo"/>
+          <input id="upd-cat1" type="number" placeholder="CAT1" min="0" max="100"/>
+          <input id="upd-cat2" type="number" placeholder="CAT2" min="0" max="100"/>
+          <input id="upd-fat"  type="number" placeholder="FAT"  min="0" max="100"/>
+          <button class="btn-upd" onclick="updateStudent()">Update</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- REPORTS -->
+    <section class="tab" id="tab-reports">
+      <header class="page-head">
+        <div><h1>Reports</h1><p>Analytics and class insights</p></div>
+      </header>
+
+      <div class="reports-layout">
+        <div class="card rpt-card" id="rpt-toppers"></div>
+        <div class="card rpt-card" id="rpt-stats"></div>
+        <div class="card rpt-card rpt-wide" id="rpt-dist"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal-bg" id="modal" onclick="maybeCloseModal(event)">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
